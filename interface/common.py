@@ -1,124 +1,204 @@
-# interface/common.py
-
 import streamlit as st
 import base64
-import io
-import soundfile as sf
 
 def load_css():
     """
-    Custom CSS for clean modern light mode
+    Injects custom CSS for a premium look.
     """
     st.markdown("""
         <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        /* Import Google Font */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;600;700&display=swap');
 
+        /* Global Styles */
         html, body, [class*="css"] {
-            font-family: 'Inter', sans-serif;
-            background-color: #f8fafc;
-            color: #1e293b;
+            font-family: 'Roboto Mono', monospace;
+            background-color: #0d1117;
+            color: #e6edf3;
         }
-
-        .main .block-container {
-            background-color: #ffffff;
-            padding-top: 2rem;
-            padding-bottom: 3rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            margin-top: 1rem;
-            max-width: 1200px;
-        }
-
+        
+        /* Headers */
         h1, h2, h3 {
             font-weight: 700;
-            color: #2563eb;
+            letter-spacing: -0.5px;
+            color: #00FF9D;
         }
-
-        h1 {
-            font-size: 2.8rem;
-        }
-
+        
+        /* Buttons */
         .stButton > button {
-            background-color: #2563eb;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 0.65rem 1.5rem;
+            background: transparent;
+            color: #00FF9D;
+            border: 2px solid #00FF9D;
+            border-radius: 4px;
+            padding: 0.5rem 1rem;
             font-weight: 600;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+            box-shadow: 0 0 10px rgba(0, 255, 157, 0.2);
         }
-
+        
         .stButton > button:hover {
-            background-color: #1d4ed8;
+            background: #00FF9D;
+            color: #0d1117;
+            box-shadow: 0 0 20px rgba(0, 255, 157, 0.6);
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
         }
 
+        /* Uploader Customization */
         [data-testid="stFileUploader"] section {
-            background-color: #f1f5f9;
-            border: 2px dashed #cbd5e1;
-            border-radius: 10px;
-            padding: 1rem;
+            background-color: #161b22;
+            border: 1px dashed #30363d;
         }
-
         [data-testid="stFileUploader"] section:hover {
-            border-color: #2563eb;
-            background-color: #e0eaff;
+            border-color: #00FF9D;
         }
-
+        [data-testid="stFileUploader"] button {
+            background: #21262d;
+            color: #c9d1d9;
+            border: 1px solid #30363d;
+        }
+        
+        /* Custom Scrollbar */
         ::-webkit-scrollbar {
-            width: 8px;
+            width: 10px;
         }
         ::-webkit-scrollbar-track {
-            background: #f1f5f9;
+            background: #0d1117; 
         }
         ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
+            background: #30363d; 
+            border-radius: 5px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
+            background: #00FF9D; 
         }
+        
         </style>
     """, unsafe_allow_html=True)
 
 def render_header(title, subtitle=""):
     st.markdown(f"""
-        <div style="text-align: center; margin-bottom: 3rem;">
-            <h1 style="font-size: 3.2rem; color: #2563eb; margin-bottom: 0.8rem;">
-                {title}
-            </h1>
-            <p style="font-size: 1.3rem; color: #64748b; max-width: 800px; margin: 0 auto;">
-                {subtitle}
-            </p>
+        <div style="text-align: center; margin-bottom: 2rem; border-bottom: 2px solid #30363d; padding-bottom: 1rem;">
+            <h1 style="font-size: 3rem; margin-bottom: 0.5rem; color: #00FF9D; text-shadow: 0 0 10px rgba(0, 255, 157, 0.3);">{title}</h1>
+            <p style="font-size: 1.2rem; color: #8b949e; font-family: 'Roboto Mono', monospace;">{subtitle}</p>
         </div>
-        <hr style="border: 0; height: 2px; background: linear-gradient(to right, transparent, #e2e8f0, transparent); margin: 3rem 0;">
     """, unsafe_allow_html=True)
 
 def get_audio_download_link(audio_data, fs, filename="processed_audio.wav"):
+    import soundfile as sf
+    import io
+import streamlit as st
+import base64
+
+def load_css():
+    """
+    Injects custom CSS for a premium look.
+    """
+    st.markdown("""
+        <style>
+        /* Import Google Font */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;600;700&display=swap');
+
+        /* Global Styles */
+        html, body, [class*="css"] {
+            font-family: 'Roboto Mono', monospace;
+            background-color: #0d1117;
+            color: #e6edf3;
+        }
+        
+        /* Headers */
+        h1, h2, h3 {
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #00FF9D;
+        }
+        
+        /* Buttons */
+        .stButton > button {
+            background: transparent;
+            color: #00FF9D;
+            border: 2px solid #00FF9D;
+            border-radius: 4px;
+            padding: 0.5rem 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 255, 157, 0.2);
+        }
+        
+        .stButton > button:hover {
+            background: #00FF9D;
+            color: #0d1117;
+            box-shadow: 0 0 20px rgba(0, 255, 157, 0.6);
+            transform: translateY(-2px);
+        }
+
+        /* Uploader Customization */
+        [data-testid="stFileUploader"] section {
+            background-color: #161b22;
+            border: 1px dashed #30363d;
+        }
+        [data-testid="stFileUploader"] section:hover {
+            border-color: #00FF9D;
+        }
+        [data-testid="stFileUploader"] button {
+            background: #21262d;
+            color: #c9d1d9;
+            border: 1px solid #30363d;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0d1117; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #30363d; 
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00FF9D; 
+        }
+        
+        </style>
+    """, unsafe_allow_html=True)
+
+def render_header(title, subtitle=""):
+    st.markdown(f"""
+        <div style="text-align: center; margin-bottom: 2rem; border-bottom: 2px solid #30363d; padding-bottom: 1rem;">
+            <h1 style="font-size: 3rem; margin-bottom: 0.5rem; color: #00FF9D; text-shadow: 0 0 10px rgba(0, 255, 157, 0.3);">{title}</h1>
+            <p style="font-size: 1.2rem; color: #8b949e; font-family: 'Roboto Mono', monospace;">{subtitle}</p>
+        </div>
+    """, unsafe_allow_html=True)
+
+def get_audio_download_link(audio_data, fs, filename="processed_audio.wav"):
+    import soundfile as sf
+    import io
+    
     buffer = io.BytesIO()
     sf.write(buffer, audio_data, fs, format='WAV')
     buffer.seek(0)
     b64 = base64.b64encode(buffer.read()).decode()
-   
-    href = f'''
-    <a href="data:audio/wav;base64,{b64}" download="{filename}" style="text-decoration: none;">
-        <button style="
-            background: #10b981; 
-            color: white; 
-            border: none; 
-            padding: 14px 28px; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            font-weight: bold;
-            font-size: 1.1rem;
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
-        ">
-            📥 تحميل الملف المعالج
-        </button>
-    </a>
-    '''
+    
+    href = f'<a href="data:audio/wav;base64,{b64}" download="{filename}" style="text-decoration: none;"><button style="background: #10B981; color: white; border: none; padding: 10px 20px; border_radius: 5px; cursor: pointer; font_weight: bold;">Download Processed Audio</button></a>'
     return href
 
-# سيب دالة convert_mp3_to_wav زي ما هي إذا كانت موجودة
+def convert_mp3_to_wav(mp3_file):
+    """
+    Converts an uploaded MP3 file to WAV format using pydub.
+    Returns a BytesIO object containing the WAV data.
+    """
+    try:
+        import static_ffmpeg
+        static_ffmpeg.add_paths()
+    except ImportError:
+        pass
+        
+    from pydub import AudioSegment
+    import io
+    
+    audio = AudioSegment.from_mp3(mp3_file)
+    wav_io = io.BytesIO()
+    audio.export(wav_io, format="wav")
+    wav_io.seek(0)
+    return wav_io
